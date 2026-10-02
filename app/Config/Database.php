@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -47,10 +47,10 @@ class Database extends Config
 
     public array $default_sl = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -67,10 +67,10 @@ class Database extends Config
     ];
     public array $backend = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -87,10 +87,10 @@ class Database extends Config
     ];
     public array $backend_sl = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -107,10 +107,10 @@ class Database extends Config
     ];
     public array $data = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -127,10 +127,10 @@ class Database extends Config
     ];
     public array $data_sl = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'inislite_user',
+        'password'     => 'Laba1M/Bulan',
+        'database'     => 'inislite_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,

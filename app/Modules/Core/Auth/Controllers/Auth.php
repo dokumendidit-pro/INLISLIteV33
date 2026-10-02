@@ -82,7 +82,7 @@ public function login()
 			$hcaptchaResponse = $this->request->getPost('h-captcha-response');
 			
 			// Verifikasi hCaptcha terlebih dahulu
-			if (!$this->verifyHcaptcha($hcaptchaResponse)) {
+			if (!empty(getenv("HCAPTCHA_SITE_KEY")) && !$this->verifyHcaptcha($hcaptchaResponse)) {
 				return redirect()->back()->withInput()->with('error', 'Verifikasi hCaptcha gagal. Silakan coba lagi.');
 			}
 

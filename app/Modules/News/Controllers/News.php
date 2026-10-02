@@ -41,4 +41,20 @@ class News extends \App\Controllers\BaseController
     $data['title'] = $news->title; 
     return view('News\Views\detail', $data);
 }
+
+    public function detailBySlug($slug)
+    {
+        $news = $this->beritaModel
+            ->select('t_berita.*, users.username') 
+            ->join('users', 'users.id = t_berita.created_by', 'left')
+            ->where('slug', $slug)
+            ->first();
+            
+        if (!$news) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        $data['news'] = $news;
+        $data['title'] = $news->title; 
+        return view('News\Views\detail', $data);
+    }
 }

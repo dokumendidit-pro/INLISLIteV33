@@ -578,7 +578,7 @@ $page_title = ucfirst($segment2 ?: $segment1);
 
     <?php if ($isMemberListPage): ?>
         <script src="<?= base_url('assets/js/jquery-4.0.0.min.js') ?>"></script>
-        <script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
+        <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
         <script src="<?= base_url('assets/js/datatables.min.js') ?>"></script>
         <script src="<?= base_url('assets/vendors/form-components/toggle-switch.min.js') ?>"></script>
         <script src="<?= base_url('assets/vendors/magnific-popup/jquery.magnific-popup.min.js') ?>"></script>

@@ -14,6 +14,7 @@ $routes->group('opac', ['namespace' => 'Opac\Controllers'], function ($subroutes
 	$subroutes->post('member-login', 'Opac::memberLogin');
 	$subroutes->add('visitor_export', 'Opac::visitor_export');
 	$subroutes->add('member', 'Opac::member');
+	$subroutes->add('export', 'Opac::export');
 	$subroutes->add('member_export', 'Opac::member_export');
 	
 	// Add recommendation routes

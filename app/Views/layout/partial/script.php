@@ -45,7 +45,7 @@
         }
     }
 </script>
-<script src="<?= base_url('assets/js'); ?>/bootstrap.min.js"></script>
+<script src="<?= base_url('assets/js'); ?>/bootstrap.bundle.min.js"></script>
 <script src="<?= base_url('assets/js'); ?>/metisMenu.min.js"></script>
 <script src="<?= base_url('assets/js'); ?>/scrollbar.min.js"></script>
 <script src="<?= base_url('assets/js'); ?>/toastr.min.js"></script>

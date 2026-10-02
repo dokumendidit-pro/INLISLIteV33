@@ -5,5 +5,5 @@ $routes->group('news', ['namespace' => 'News\Controllers'], function($subroutes)
     $subroutes->add('', 'News::index');
 	$subroutes->add('index', 'News::index');
     $subroutes->add('detail/(:num)/(:segment)', 'News::detail/$1/$2');
-    
 });
+$routes->get('berita/(:segment)', '\News\Controllers\News::detailBySlug/$1');

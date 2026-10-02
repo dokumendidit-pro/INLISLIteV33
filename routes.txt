@@ -1,0 +1,10 @@
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-01 18:36:37 UTC+07:00
+
+
+[Error]
+
+Class "App\Controllers\BaseResourceController" not found
+
+at APPPATH/Modules/SelfReturn/Controllers/Api/SelfReturn.php:10
+

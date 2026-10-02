@@ -480,7 +480,7 @@
                 <div id="captchaStatus" class="visually-hidden" role="status" aria-live="polite"></div>
 
                 <!-- Login Button -->
-                <button type="submit" class="btn-login" id="loginBtn" disabled>
+                <button type="submit" class="btn-login" id="loginBtn" <?php echo !empty($hcaptcha_site_key) ? "disabled" : ""; ?>>
                     <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>
                     Masuk ke Sistem
                 </button>

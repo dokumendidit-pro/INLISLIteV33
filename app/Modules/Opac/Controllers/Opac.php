@@ -464,11 +464,31 @@ public function browse()
     public function export()
     {
         $format = $this->request->getVar('format') ?? 'excel';
+        $exportType = $this->request->getVar('export');
         $search = $this->request->getVar('search');
 
         $builder = $this->katalogModel->select('catalogs.*');
 
-        if ($search) {
+        if ($exportType === 'browse_results') {
+            $browseType = $this->request->getVar('type') ?? 'author';
+            $letter = $this->request->getVar('letter') ?? 'A';
+            
+            $allowedTypes = ['author', 'title', 'subject'];
+            $browseType = in_array($browseType, $allowedTypes) ? $browseType : 'author';
+            $letter = preg_match('/^[A-Za-z0-9]$/', $letter) ? strtoupper($letter) : 'A';
+            
+            switch ($browseType) {
+                case 'author':
+                    $builder->like('Author', $letter, 'after')->orderBy('Author', 'ASC');
+                    break;
+                case 'title':
+                    $builder->like('Title', $letter, 'after')->orderBy('Title', 'ASC');
+                    break;
+                case 'subject':
+                    $builder->like('Subject', $letter, 'after')->orderBy('Subject', 'ASC');
+                    break;
+            }
+        } elseif ($search) {
             $builder->groupStart()
                 ->like('Title', $search)
                 ->orLike('Author', $search)
@@ -480,6 +500,8 @@ public function browse()
 
         if ($format === 'excel') {
             return $this->exportToExcel($catalogs);
+        } elseif ($format === 'pdf') {
+            return $this->exportToPdf($catalogs);
         } else {
             return $this->exportToCSV($catalogs);
         }
@@ -515,20 +537,20 @@ public function browse()
         // Data
         $row = 2;
         foreach ($catalogs as $catalog) {
-            $sheet->setCellValue('A' . $row, $catalog['ID']);
-            $sheet->setCellValue('B' . $row, $catalog['ControlNumber']);
-            $sheet->setCellValue('C' . $row, $catalog['BIBID']);
-            $sheet->setCellValue('D' . $row, $catalog['Title']);
-            $sheet->setCellValue('E' . $row, $catalog['Author']);
-            $sheet->setCellValue('F' . $row, $catalog['Edition']);
-            $sheet->setCellValue('G' . $row, $catalog['Publisher']);
-            $sheet->setCellValue('H' . $row, $catalog['PublishLocation']);
-            $sheet->setCellValue('I' . $row, $catalog['PublishYear']);
-            $sheet->setCellValue('J' . $row, $catalog['Subject']);
-            $sheet->setCellValue('K' . $row, $catalog['PhysicalDescription']);
-            $sheet->setCellValue('L' . $row, $catalog['ISBN']);
-            $sheet->setCellValue('M' . $row, $catalog['CallNumber']);
-            $sheet->setCellValue('N' . $row, $catalog['Languages']);
+            $sheet->setCellValue('A' . $row, $catalog->ID);
+            $sheet->setCellValue('B' . $row, $catalog->ControlNumber);
+            $sheet->setCellValue('C' . $row, $catalog->BIBID);
+            $sheet->setCellValue('D' . $row, $catalog->Title);
+            $sheet->setCellValue('E' . $row, $catalog->Author);
+            $sheet->setCellValue('F' . $row, $catalog->Edition);
+            $sheet->setCellValue('G' . $row, $catalog->Publisher);
+            $sheet->setCellValue('H' . $row, $catalog->PublishLocation);
+            $sheet->setCellValue('I' . $row, $catalog->PublishYear);
+            $sheet->setCellValue('J' . $row, $catalog->Subject);
+            $sheet->setCellValue('K' . $row, $catalog->PhysicalDescription);
+            $sheet->setCellValue('L' . $row, $catalog->ISBN);
+            $sheet->setCellValue('M' . $row, $catalog->CallNumber);
+            $sheet->setCellValue('N' . $row, $catalog->Languages);
             $row++;
         }
 
@@ -574,26 +596,57 @@ public function browse()
         // Data
         foreach ($catalogs as $catalog) {
             fputcsv($output, [
-                $catalog['ID'],
-                $catalog['ControlNumber'],
-                $catalog['BIBID'],
-                $catalog['Title'],
-                $catalog['Author'],
-                $catalog['Edition'],
-                $catalog['Publisher'],
-                $catalog['PublishLocation'],
-                $catalog['PublishYear'],
-                $catalog['Subject'],
-                $catalog['PhysicalDescription'],
-                $catalog['ISBN'],
-                $catalog['CallNumber'],
-                $catalog['Languages']
+                $catalog->ID,
+                $catalog->ControlNumber,
+                $catalog->BIBID,
+                $catalog->Title,
+                $catalog->Author,
+                $catalog->Edition,
+                $catalog->Publisher,
+                $catalog->PublishLocation,
+                $catalog->PublishYear,
+                $catalog->Subject,
+                $catalog->PhysicalDescription,
+                $catalog->ISBN,
+                $catalog->CallNumber,
+                $catalog->Languages
             ]);
         }
 
         fclose($output);
         exit;
     }
+
+    private function exportToPdf($catalogs)
+    {
+        $dompdf = new \Dompdf\Dompdf();
+        
+        $html = '<h2 style="text-align: center;">Katalog Perpustakaan</h2>';
+        $html .= '<table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse; font-size: 12px;">';
+        $html .= '<thead><tr>';
+        $html .= '<th>No</th><th>Judul</th><th>Pengarang</th><th>Penerbit</th><th>Tahun Terbit</th>';
+        $html .= '</tr></thead><tbody>';
+        
+        $no = 1;
+        foreach ($catalogs as $catalog) {
+            $html .= '<tr>';
+            $html .= '<td>' . $no++ . '</td>';
+            $html .= '<td>' . esc($catalog->Title) . '</td>';
+            $html .= '<td>' . esc($catalog->Author) . '</td>';
+            $html .= '<td>' . esc($catalog->Publisher) . '</td>';
+            $html .= '<td>' . esc($catalog->PublishYear) . '</td>';
+            $html .= '</tr>';
+        }
+        $html .= '</tbody></table>';
+        
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        
+        $dompdf->stream('catalog_export_' . date('Y-m-d_H-i-s') . '.pdf', array("Attachment" => true));
+        exit;
+    }
+
 
     public function statistics()
     {
@@ -1843,7 +1896,7 @@ public function browse()
             ]);
         }
 
-        if (!$this->verifyHcaptcha($hcaptchaResponse)) {
+        if (!empty(getenv("HCAPTCHA_SITE_KEY")) && !$this->verifyHcaptcha($hcaptchaResponse)) {
             return $this->response->setJSON([
                 'error'   => true,
                 'message' => 'Verifikasi hCaptcha gagal. Silakan coba lagi.',
